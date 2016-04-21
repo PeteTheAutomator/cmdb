@@ -1,0 +1,45 @@
+#!/usr/bin/env python
+
+import ConfigParser
+import argparse
+import json
+from cmdb_libs.audit import YumHandler, HostMetadata
+import requests
+
+
+config = ConfigParser.ConfigParser()
+config.read('/etc/audit/server.conf')
+
+
+def argparser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-o', '--output', choices=['stdout', 'server'], default='stdout',
+                        help='where to output the results')
+    parsed_args = parser.parse_args()
+    return vars(parsed_args)
+
+
+def post_results(results, repo_url):
+    headers = {'Content-Type': 'application/json'}
+    r = requests.post(repo_url, headers=headers, data=json.dumps(results))
+    if r.status_code != 201:
+        raise Exception('Unexpected http response ({0}) from {1}'.format(r.status_code, repo))
+
+
+if __name__ == '__main__':
+    print config.get('defaults', 'repo_url')
+
+    args = argparser()
+    instance_id = HostMetadata().get()
+    rpm_packages = YumHandler().get()
+
+    results = {
+        'instance_id': instance_id,
+        'rpm_packages': rpm_packages,
+    }
+
+    if args['output'] == 'stdout':
+        print json.dumps(results, indent=4)
+    elif args['output'] == 'server':
+        repo_url = config.get('defaults', 'repo_url')
+        post_results(results, repo_url)

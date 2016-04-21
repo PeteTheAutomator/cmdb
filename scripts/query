@@ -1,0 +1,26 @@
+#!/usr/bin/env python
+
+import ConfigParser
+import argparse
+from cmdb_libs.query import QueryHandler
+import json
+
+
+config = ConfigParser.ConfigParser()
+config.read('/etc/audit/server.conf')
+
+
+def argparser():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-n', '--name', required=True, help='name of the package')
+    parser.add_argument('-v', '--version', required=True, help='version of the package')
+    parsed_args = parser.parse_args()
+    return vars(parsed_args)
+
+
+if __name__ == '__main__':
+    repo_url = config.get('defaults', 'repo_url')
+    args = argparser()
+    qh = QueryHandler(repo_url)
+    results = qh.get_package_and_version(args['name'], args['version'])
+    print json.dumps(json.loads(results), indent=4)
