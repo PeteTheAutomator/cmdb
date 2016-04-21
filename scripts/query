@@ -10,6 +10,22 @@ config = ConfigParser.ConfigParser()
 config.read('/etc/cmdb/server.conf')
 
 
+'''
+query rpm_package.name = httpd and rpm_package.version = 2.2.31 or facts.distribution_release = foo
+
+where = [
+    {
+        "rpm_package.name": "httpd",
+        "rpm_package.version": "2.2.31",
+    },
+    {
+        "facts.distribution_release": "foo"
+    }
+]
+
+'''
+
+
 def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--name', required=True, help='name of the package')

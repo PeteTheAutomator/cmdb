@@ -1,5 +1,7 @@
 - hosts: all
   connection: local
+  become: yes
+  become_method: sudo
   tasks:
     - name: enable EPEL yum repository
       command: yum-config-manager --enable epel

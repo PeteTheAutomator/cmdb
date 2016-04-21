@@ -50,4 +50,3 @@ class HostMetadata:
 
     def get(self):
         return self.fetch('instance-id').text
-
