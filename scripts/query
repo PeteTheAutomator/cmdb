@@ -7,7 +7,7 @@ import json
 
 
 config = ConfigParser.ConfigParser()
-config.read('/etc/audit/server.conf')
+config.read('/etc/cmdb/server.conf')
 
 
 def argparser():
