@@ -12,6 +12,10 @@ schema = {
         'type': 'list',
         'required': False,
     },
+    'facts': {
+        'type': 'dict',
+        'required': False,
+    }
 }
 
 audits = {

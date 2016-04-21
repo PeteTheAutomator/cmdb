@@ -3,7 +3,7 @@
 import ConfigParser
 import argparse
 import json
-from cmdb_libs.audit import YumHandler, HostMetadata
+from cmdb_libs.audit import YumHandler, FacterHandler, HostMetadata
 import requests
 
 
@@ -32,10 +32,12 @@ if __name__ == '__main__':
     args = argparser()
     instance_id = HostMetadata().get()
     rpm_packages = YumHandler().get()
+    facts = FacterHandler().get()
 
     results = {
         'instance_id': instance_id,
         'rpm_packages': rpm_packages,
+        'facts': facts,
     }
 
     if args['output'] == 'stdout':

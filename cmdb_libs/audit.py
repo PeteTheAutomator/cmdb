@@ -1,4 +1,5 @@
 from yum import *
+from ansible.module_utils.facts import Facts
 import requests
 import urlparse
 import os
@@ -27,6 +28,16 @@ class YumHandler:
         return results
 
 
+class FacterHandler:
+    def __init__(self):
+        pass
+
+    def get(self):
+        # f = Facts(load_on_init=False)
+        # f.get_platform_facts()
+        return {'foo': 'bar'}
+
+
 class HostMetadata:
     def __init__(self, metadata_url_base='http://169.254.169.254/latest/meta-data/'):
         self.metadata_url_base = metadata_url_base
@@ -39,3 +50,4 @@ class HostMetadata:
 
     def get(self):
         return self.fetch('instance-id').text
+
