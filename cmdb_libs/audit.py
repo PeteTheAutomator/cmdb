@@ -33,9 +33,9 @@ class FacterHandler:
         pass
 
     def get(self):
-        # f = Facts(load_on_init=False)
-        # f.get_platform_facts()
-        return {'foo': 'bar'}
+        f = Facts(load_on_init=False)
+        f.get_platform_facts()
+        return f.populate()
 
 
 class HostMetadata:
