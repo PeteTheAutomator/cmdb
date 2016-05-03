@@ -17,12 +17,20 @@
         - python-virtualenv
         - mongodb-org
         - mongodb-org-server
+        - httpd
+        - mod_wsgi
 
     - name: install pips
       pip: name=eve state=present
 
-    - name: start and enable mongodb service
-      service: name=mongod state=running enabled=yes
+    - name: copy apache config
+      copy: src=cmdb.conf dest=/etc/httpd/conf.d/cmdb.conf owner=root group=root mode=0644
 
     - name: clone cmdb project from git
       git: repo=https://github.com/PeteTheAutomator/cmdb.git dest=/usr/local/cmdb
+
+    - name: start and enable mongodb service
+      service: name=mongod state=running enabled=yes
+
+    - name: start and enable httpd service
+      service: name=httpd state=running enabled=yes
