@@ -45,7 +45,7 @@ You can install the client using pip - simply point it at this repository like s
 This provides both the **audit** and **query** CLI tools; both require simple a simple configuration file to be dropped into **/etc/cmdb/server.conf** which should look like the following example...
 
     [defaults]
-    repo_url = http://cmdb-server:8080/audits
+    repo_url = http://cmdb-server/audits
 
 
 Contact

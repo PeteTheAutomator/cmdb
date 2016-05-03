@@ -1,8 +1,16 @@
 - hosts: all
-  connection: local
   become: yes
   become_method: sudo
   tasks:
+    - name: install epel repo
+      command: yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+      when: ansible_distribution == 'CentOS'
+      args:
+        creates: /etc/yum.repos.d/epel.repo
+
+    - name: install yum-utils
+      yum: name=yum-utils state=present
+
     - name: enable EPEL yum repository
       command: yum-config-manager --enable epel
 
@@ -26,8 +34,17 @@
     - name: copy apache config
       copy: src=cmdb.conf dest=/etc/httpd/conf.d/cmdb.conf owner=root group=root mode=0644
 
+    - name: add cmdb group
+      group: name=cmdb state=present
+
+    - name: add cmdb user
+      user: name=cmdb group=cmdb
+
     - name: clone cmdb project from git
       git: repo=https://github.com/PeteTheAutomator/cmdb.git dest=/usr/local/cmdb
+
+    - name: set permisisons on cmdb app dir
+      file: path=/usr/local/cmdb state=directory owner=cmdb group=cmdb recurse=yes
 
     - name: start and enable mongodb service
       service: name=mongod state=running enabled=yes
