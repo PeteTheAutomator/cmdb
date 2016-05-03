@@ -1,5 +1,6 @@
 RESOURCE_METHODS = ['GET', 'POST', 'DELETE']
 ITEM_METHODS = ['GET', 'PATCH', 'PUT', 'DELETE']
+VERSIONING = True
 
 schema = {
     'instance_id': {
