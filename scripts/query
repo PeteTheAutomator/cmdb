@@ -10,22 +10,6 @@ config = ConfigParser.ConfigParser()
 config.read('/etc/cmdb/server.conf')
 
 
-'''
-query rpm_package.name = httpd and rpm_package.version = 2.2.31 or facts.distribution_release = foo
-
-where = [
-    {
-        "rpm_package.name": "httpd",
-        "rpm_package.version": "2.2.31",
-    },
-    {
-        "facts.distribution_release": "foo"
-    }
-]
-
-'''
-
-
 def argparser():
     parser = argparse.ArgumentParser()
     parser.add_argument('-n', '--name', required=True, help='name of the package')
@@ -39,4 +23,6 @@ if __name__ == '__main__':
     args = argparser()
     qh = QueryHandler(repo_url)
     results = qh.get_package_and_version(args['name'], args['version'])
-    print json.dumps(json.loads(results), indent=4)
+    results_dict = json.loads(results)
+    for item in results_dict['_items']:
+        print item['instance_id']
