@@ -22,7 +22,15 @@ if __name__ == '__main__':
     repo_url = config.get('defaults', 'repo_url')
     args = argparser()
     qh = QueryHandler(repo_url)
-    results = qh.get_package_and_version(args['name'], args['version'])
-    results_dict = json.loads(results)
-    for item in results_dict['_items']:
+    #results = qh.get_package_and_version(args['name'], args['version'])
+
+    results = qh.get_with_pagination(
+        {
+            'rpm_packages.name': args['name'],
+            'rpm_packages.version': args['version'],
+        }
+    )
+
+    #results_dict = json.loads(results)
+    for item in results:
         print item['instance_id']
