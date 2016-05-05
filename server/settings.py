@@ -8,6 +8,7 @@ schema = {
         'minlength': 10,
         'maxlength': 10,
         'required': True,
+        'unique': True,
     },
     'rpm_packages': {
         'type': 'list',
